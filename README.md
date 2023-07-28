@@ -6,6 +6,6 @@ Lots of help from [zero](https://github.com/zer0-5) and, for qtile, a huge thank
 
 Some previews:
 
-[Screenshot01](images/01.png)
+![Screenshot01](images/01.png)
 
-[Screenshot02](images/02.png)
+![Screenshot02](images/02.png)
