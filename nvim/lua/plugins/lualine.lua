@@ -5,8 +5,17 @@ return {
         options = {
             icons_enabled = true,
             theme = "auto",
-            component_separators = "",
+            component_separators = "|",
             section_separators = { left = '', right = '' },
+        },
+        sections = {
+            lualine_x = {},
+            lualine_y = {
+                'filetype', 'progress'
+            },
+            lualine_z = {
+                { 'location', separator = { right = '' }, left_padding = 2 },
+            },
         },
     },
 }
