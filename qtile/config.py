@@ -91,11 +91,16 @@ keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod, "shift"], "a", lazy.spawn("dmenu_run"), desc="Launch dmenu_run"),
+    Key(
+        [mod, "shift"],
+        "a",
+        lazy.spawn("/home/tgvp/.config/dmenu/dmenu_run_history"),
+        desc="Launch dmenu_run",
+    ),
     Key(
         [mod, "shift"],
         "p",
-        lazy.spawn("/../scripts/powermenu.sh"),
+        lazy.spawn("/home/tgvp/.scripts/powermenu.sh"),
         desc="Shows dmenu power menu",
     ),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
@@ -109,37 +114,42 @@ keys = [
     Key([mod], "s", lazy.spawn("spotify"), desc="Spawn Spotify"),
     Key([mod], "w", lazy.spawn("firefox"), desc="Spawn Firefox"),
     Key([mod], "f", lazy.spawn("thunar"), desc="Spawn Thunar"),
-    Key([mod], "z", lazy.spawn("zathura"), desc="Spawn Zathura"),
+    Key([mod, "shift"], "z", lazy.spawn("zathura"), desc="Spawn Zathura"),
+    Key([mod], "z", lazy.spawn("zotero"), desc="Spawn Zotero"),
     Key([mod], "o", lazy.spawn("obsidian"), desc="Spawn Obsidian"),
     Key([mod, "shift"], "r", lazy.spawn(
         "alacritty -e ranger"), desc="Spawn Ranger"),
     Key(
         [mod, "shift"], "e", lazy.spawn("emacsclient -c -a 'emacs'"), desc="Spawn emacs"
     ),
-    Key([mod, "shift"], "l", lazy.spawn(
-        "/../scripts/lock.sh"), desc="Lock Screen"),
+    Key(
+        [mod, "shift"],
+        "l",
+        lazy.spawn("/home/tgvp/.scripts/lock.sh"),
+        desc="Lock Screen",
+    ),
     Key(
         [mod, "shift"],
         "u",
-        lazy.spawn("/../scripts/autoupdate.py"),
+        lazy.spawn("/home/tgvp/.scripts/autoupdate.py"),
         desc="Updates system",
     ),
     Key(
         [mod, "shift"],
         "h",
-        lazy.spawn("/../scripts/home.sh"),
+        lazy.spawn("/home/tgvp/.scripts/home.sh"),
         desc="Home screens layout",
     ),
     Key(
         [mod, "shift"],
         "i",
-        lazy.spawn("/../scripts/inesc.sh"),
+        lazy.spawn("/home/tgvp/.scripts/inesc.sh"),
         desc="Inesctec screens layout",
     ),
     Key(
         [mod, "shift"],
         "w",
-        lazy.spawn("/../scripts/change_wallpaper.sh"),
+        lazy.spawn("/home/tgvp/.scripts/change_wallpaper.sh"),
         desc="Change Wallpaper",
     ),
     Key(
@@ -175,7 +185,7 @@ keys = [
     Key(
         [mod, "control"],
         "s",
-        lazy.spawn("/../scripts/change_notifications_status.sh"),
+        lazy.spawn("/home/tgvp/.scripts/change_notifications_status.sh"),
         desc="Snooze/Activate notifications.",
     ),
     # Toggle between different layouts as defined below
@@ -186,13 +196,13 @@ keys = [
     Key(
         [],
         "XF86MonBrightnessUp",
-        lazy.spawn("/../scripts/bright +"),
+        lazy.spawn("/home/tgvp/.scripts/bright +"),
         desc="Increase screen brightness",
     ),
     Key(
         [],
         "XF86MonBrightnessDown",
-        lazy.spawn("/../scripts/bright -"),
+        lazy.spawn("/home/tgvp/.scripts/bright -"),
         desc="Decrease screen brightness",
     ),
     Key(
@@ -233,6 +243,7 @@ groups = [
     Group("mus", layout="monadtall"),
     Group("obs", layout="max"),
     Group("shu", layout="monadtall"),
+    Group("fun", layout="max"),
 ]
 
 for i, group in enumerate(groups, 1):
@@ -267,7 +278,7 @@ dgroups_key_binder = simple_key_binder("mod4")
 layout_theme = {
     "border_width": 1,
     "margin": 1,
-    "border_focus": "#3333FF",
+    "border_focus": "#A2EEE2",
 }
 
 layouts = [
@@ -295,27 +306,19 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.Sep(linewidth=0, padding=6),
-                widget.Image(
-                    filename="~/.config/qtile/icons/piedpiper.png",
-                    scale="False",
-                    mouse_callbacks={
-                        "Button1": lambda: qtile.cmd_spawn("alacritty -e neofetch")
-                    },
-                ),
-                widget.Sep(linewidth=0, padding=6),
-                Spotify(foreground="#7B68EE", format="{artist}", padding=0),
-                Spotify(format=" {track}"),
+                widget.Sep(linewidth=0, padding=4),
                 widget.GroupBox(
                     active="ffffff",
-                    this_screen_border="#4169E1",
+                    highlight_method="line",
+                    this_screen_border="#A2EEE2",
                     other_screen_border="#808080",
-                    borderwidth=2,
+                    this_current_screen_border="#A2EEE2",
+                    borderwidth=1,
                 ),
-                widget.Prompt(),
-                widget.WindowName(foreground="#808080"),
-                widget.Prompt(),
-                widget.CurrentLayout(foreground="#4169E1"),
+                widget.Spacer(),
+                Spotify(foreground="#A2EEE2", format="{artist}", padding=0),
+                Spotify(format=" {track}"),
+                widget.Spacer(),
                 widget.ThermalZone(format_crit="{temp}°C", crit=80, high=60),
                 widget.CPU(format="cpu:{load_percent}%"),
                 widget.Memory(
@@ -333,15 +336,18 @@ screens = [
                     low_foreground="FF0000",
                     notify_below=20,
                 ),
-                widget.PulseVolume(
+                widget.Volume(
                     fmt="vol:{}",
                     mouse_callbacks={
-                        "Button3": lambda: qtile.cmd_spawn("pavucontrol")},
+                        "Button3": lambda: qtile.cmd_spawn("pavucontrol"),
+                        "Button1": lambda: qtile.cmd_spawn(
+                            "pactl set-sink-mute 0 toggle"
+                        ),
+                    },
                 ),
                 widget.Clock(format="%H:%M %A, %d %B"),
-                widget.BatteryIcon(),
                 widget.Systray(),
-                widget.Sep(linewidth=0, padding=6),
+                widget.Sep(linewidth=0, padding=4),
             ],
             24,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders

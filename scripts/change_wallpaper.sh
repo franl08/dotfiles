@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-feh --bg-fill --randomize ../Wallpapers/*
+feh --bg-fill $(find ~/Wallpapers -type f | shuf -n1)
